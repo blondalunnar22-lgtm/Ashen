@@ -1,0 +1,725 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ashen Realm Prototype</title>
+  <style>
+    :root {
+      --bg: #111318;
+      --panel: #1a1f29;
+      --panel-2: #232a36;
+      --text: #ecf0f7;
+      --muted: #a7b0c0;
+      --accent: #d6a85f;
+      --danger: #d96b6b;
+      --good: #72c38f;
+      --border: #303847;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #0e1116, #151a21);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    h1, h2, h3 { margin: 0 0 12px; }
+    p { color: var(--muted); }
+    .topbar {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: 12px; margin-bottom: 18px;
+    }
+    .title { display: flex; flex-direction: column; gap: 4px; }
+    .title small { color: var(--muted); }
+    .grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 18px; }
+    @media (max-width: 960px) { .grid { grid-template-columns: 1fr; } }
+    .card {
+      background: rgba(26,31,41,.95);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.22);
+      margin-bottom: 18px;
+    }
+    .row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .row-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .row-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+    @media (max-width: 720px) { .row, .row-3, .row-6 { grid-template-columns: 1fr 1fr; } }
+    label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+    input, select, textarea, button {
+      width: 100%; border-radius: 12px; border: 1px solid var(--border);
+      background: var(--panel-2); color: var(--text); padding: 10px 12px; font-size: 14px;
+    }
+    textarea { min-height: 90px; resize: vertical; }
+    button { cursor: pointer; font-weight: 700; transition: transform .08s ease, opacity .12s ease; }
+    button:hover { opacity: .96; }
+    button:active { transform: translateY(1px); }
+    .btn-accent { background: var(--accent); color: #1d1609; border: none; }
+    .btn-danger { background: var(--danger); color: white; border: none; }
+    .btn-good { background: var(--good); color: #082112; border: none; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .actions > * { flex: 1 1 180px; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border);
+      background: #171c25; padding: 8px 12px; border-radius: 999px; font-size: 13px;
+      color: var(--muted); margin: 4px 6px 4px 0;
+    }
+    .stat {
+      background: #151a22; border: 1px solid var(--border); border-radius: 14px;
+      padding: 10px; text-align: center;
+    }
+    .stat .name { color: var(--muted); font-size: 12px; margin-bottom: 6px; }
+    .stat .value { font-size: 26px; font-weight: 800; }
+    .bar {
+      width: 100%; height: 12px; background: #0d1117; border: 1px solid var(--border);
+      border-radius: 999px; overflow: hidden; margin-top: 6px;
+    }
+    .fill { height: 100%; transition: width .2s ease; }
+    .fill.vitality { background: linear-gradient(90deg, #ae4242, #d96b6b); }
+    .fill.focus { background: linear-gradient(90deg, #486fd8, #7fa4ff); }
+    .muted { color: var(--muted); }
+    .log {
+      background: #0e1319; border-radius: 12px; border: 1px solid var(--border);
+      padding: 12px; min-height: 220px; max-height: 420px; overflow: auto;
+      white-space: pre-wrap; line-height: 1.45; font-size: 14px;
+    }
+    .inventory { display: flex; flex-wrap: wrap; gap: 8px; }
+    .inventory span {
+      background: #111720; border: 1px solid var(--border); border-radius: 999px;
+      padding: 8px 10px; font-size: 13px;
+    }
+    .section-head {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px; margin-bottom: 12px;
+    }
+    .tiny { font-size: 12px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="title">
+        <h1>Ashen Realm</h1>
+        <small>Original fantasy RPG prototype — no D&D terms, no copied lore.</small>
+      </div>
+      <div class="actions" style="max-width: 520px; width: 100%;">
+        <button onclick="saveGame()">Save</button>
+        <button onclick="loadGame()">Load</button>
+        <button onclick="exportGame()">Export Save</button>
+        <button onclick="document.getElementById('importFile').click()">Import Save</button>
+        <input id="importFile" type="file" accept="application/json" style="display:none" onchange="importGame(event)" />
+      </div>
+    </div><div class="grid">
+  <div>
+    <div class="card">
+      <div class="section-head">
+        <h2>Character Creator</h2>
+        <span class="tiny">Build a hero, then start a fight.</span>
+      </div>
+      <div class="row">
+        <div>
+          <label for="heroName">Name</label>
+          <input id="heroName" placeholder="Ashen, Kael, Mira..." />
+        </div>
+        <div>
+          <label for="heroClass">Path</label>
+          <select id="heroClass">
+            <option value="Vanguard">Vanguard</option>
+            <option value="Shade">Shade</option>
+            <option value="Arcanist">Arcanist</option>
+            <option value="Warden">Warden</option>
+            <option value="Ranger">Ranger</option>
+          </select>
+        </div>
+      </div>
+      <div class="row-6" style="margin-top: 12px;">
+        <div><label>Might</label><input id="might" type="number" min="1" max="20" value="14" /></div>
+        <div><label>Finesse</label><input id="finesse" type="number" min="1" max="20" value="12" /></div>
+        <div><label>Mind</label><input id="mind" type="number" min="1" max="20" value="10" /></div>
+        <div><label>Spirit</label><input id="spirit" type="number" min="1" max="20" value="10" /></div>
+        <div><label>Guard</label><input id="guard" type="number" min="8" max="25" value="13" /></div>
+        <div><label>Level</label><input id="level" type="number" min="1" max="20" value="1" /></div>
+      </div>
+      <div class="actions" style="margin-top: 14px;">
+        <button class="btn-accent" onclick="createHero()">Create / Update Hero</button>
+        <button onclick="rollAllStats()">Roll Random Stats</button>
+        <button onclick="grantStarterLoot()">Starter Loot</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <h2>Hero Sheet</h2>
+        <span class="tiny">Vitality = health, Focus = ability energy.</span>
+      </div>
+      <div id="heroSheet"></div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <h2>Journal</h2>
+        <span class="tiny">Simple quest log for solo play.</span>
+      </div>
+      <div class="row">
+        <div>
+          <label for="questTitle">Quest Title</label>
+          <input id="questTitle" placeholder="The Black Marsh" />
+        </div>
+        <div>
+          <label for="questReward">Reward</label>
+          <input id="questReward" placeholder="75 gold, iron dagger" />
+        </div>
+      </div>
+      <div style="margin-top: 12px;">
+        <label for="questDesc">Quest Notes</label>
+        <textarea id="questDesc" placeholder="Track the raiders to the old tower..."></textarea>
+      </div>
+      <div class="actions" style="margin-top: 12px;">
+        <button class="btn-good" onclick="addQuest()">Add Quest</button>
+        <button onclick="generateQuest()">Generate Random Quest</button>
+      </div>
+      <div id="questList" style="margin-top: 12px;"></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <div class="section-head">
+        <h2>Combat Arena</h2>
+        <span class="tiny">Original d20-inspired combat system.</span>
+      </div>
+      <div class="actions">
+        <button class="btn-accent" onclick="spawnEnemy()">Spawn Enemy</button>
+        <button onclick="attackEnemy()">Attack</button>
+        <button onclick="usePower()">Use Power</button>
+        <button onclick="enemyTurn()">Enemy Turn</button>
+        <button class="btn-danger" onclick="resetBattle()">Reset Battle</button>
+      </div>
+      <div id="battleStatus" style="margin-top: 14px;"></div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <h2>Dice & Utility</h2>
+        <span class="tiny">Use for checks, traps, treasure, whatever.</span>
+      </div>
+      <div class="row-3">
+        <button onclick="manualRoll(6)">Roll d6</button>
+        <button onclick="manualRoll(12)">Roll d12</button>
+        <button onclick="manualRoll(20)">Roll d20</button>
+      </div>
+      <div class="row" style="margin-top: 12px;">
+        <div>
+          <label for="customSides">Custom Die</label>
+          <input id="customSides" type="number" min="2" value="8" />
+        </div>
+        <div>
+          <label for="customBonus">Bonus</label>
+          <input id="customBonus" type="number" value="0" />
+        </div>
+      </div>
+      <div class="actions" style="margin-top: 12px;">
+        <button onclick="customRoll()">Roll Custom</button>
+        <button onclick="clearLog()">Clear Log</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <h2>Adventure Log</h2>
+        <span class="tiny">Everything important prints here.</span>
+      </div>
+      <div id="log" class="log"></div>
+    </div>
+  </div>
+</div>
+
+  </div>  <script>
+    const STORAGE_KEY = 'ashen_realm_save_v1';
+
+    const classData = {
+      Vanguard: { vitalityBase: 14, focusBase: 4, prime: 'might', power: 'Shield Break' },
+      Shade: { vitalityBase: 10, focusBase: 6, prime: 'finesse', power: 'Shadow Cut' },
+      Arcanist: { vitalityBase: 8, focusBase: 10, prime: 'mind', power: 'Arc Burst' },
+      Warden: { vitalityBase: 12, focusBase: 8, prime: 'spirit', power: 'Radiant Ward' },
+      Ranger: { vitalityBase: 11, focusBase: 6, prime: 'finesse', power: 'Hunter Volley' },
+    };
+
+    const enemyTemplates = [
+      { name: 'Bog Ripper', guard: 11, vitality: 18, damageMin: 3, damageMax: 8, xp: 20 },
+      { name: 'Ash Wolf', guard: 12, vitality: 22, damageMin: 4, damageMax: 9, xp: 25 },
+      { name: 'Crypt Stalker', guard: 13, vitality: 26, damageMin: 5, damageMax: 10, xp: 30 },
+      { name: 'Iron Marauder', guard: 14, vitality: 32, damageMin: 6, damageMax: 12, xp: 40 },
+      { name: 'Void Priest', guard: 15, vitality: 28, damageMin: 7, damageMax: 13, xp: 45 },
+    ];
+
+    let state = {
+      hero: null,
+      enemy: null,
+      quests: [],
+      log: []
+    };
+
+    function modifier(score) {
+      return Math.floor((Number(score) - 10) / 2);
+    }
+
+    function rollDie(sides) {
+      return Math.floor(Math.random() * sides) + 1;
+    }
+
+    function rollRange(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function logLine(text) {
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      state.log.unshift(`[${time}] ${text}`);
+      renderLog();
+    }
+
+    function renderLog() {
+      document.getElementById('log').textContent = state.log.join('\n');
+    }
+
+    function clearLog() {
+      state.log = [];
+      renderLog();
+    }
+
+    function getHeroForm() {
+      return {
+        name: document.getElementById('heroName').value.trim() || 'Unnamed Hero',
+        path: document.getElementById('heroClass').value,
+        might: Number(document.getElementById('might').value),
+        finesse: Number(document.getElementById('finesse').value),
+        mind: Number(document.getElementById('mind').value),
+        spirit: Number(document.getElementById('spirit').value),
+        guard: Number(document.getElementById('guard').value),
+        level: Number(document.getElementById('level').value),
+      };
+    }
+
+    function createHero() {
+      const form = getHeroForm();
+      const cls = classData[form.path];
+      const vitalityMax = cls.vitalityBase + (form.level * 4) + modifier(form.might) * 2;
+      const focusMax = cls.focusBase + form.level + Math.max(modifier(form.mind), modifier(form.spirit), 0);
+
+      state.hero = {
+        ...form,
+        vitalityMax: Math.max(1, vitalityMax),
+        vitality: state.hero ? Math.min(state.hero.vitality, Math.max(1, vitalityMax)) : Math.max(1, vitalityMax),
+        focusMax: Math.max(0, focusMax),
+        focus: state.hero ? Math.min(state.hero.focus, Math.max(0, focusMax)) : Math.max(0, focusMax),
+        inventory: state.hero?.inventory || [],
+        xp: state.hero?.xp || 0,
+        gold: state.hero?.gold || 0,
+        power: cls.power,
+      };
+
+      renderHero();
+      renderBattle();
+      logLine(`${state.hero.name} the ${state.hero.path} enters the Ashen Realm.`);
+    }
+
+    function renderHero() {
+      const box = document.getElementById('heroSheet');
+      if (!state.hero) {
+        box.innerHTML = '<p class="muted">No hero created yet.</p>';
+        return;
+      }
+      const h = state.hero;
+      box.innerHTML = `
+        <div class="row">
+          <div>
+            <h3>${h.name}</h3>
+            <div class="pill">Path: ${h.path}</div>
+            <div class="pill">Level: ${h.level}</div>
+            <div class="pill">XP: ${h.xp}</div>
+            <div class="pill">Gold: ${h.gold}</div>
+            <div class="pill">Power: ${h.power}</div>
+          </div>
+          <div>
+            <div><strong>Vitality</strong> ${h.vitality}/${h.vitalityMax}</div>
+            <div class="bar"><div class="fill vitality" style="width:${(h.vitality / h.vitalityMax) * 100}%"></div></div>
+            <div style="margin-top:10px;"><strong>Focus</strong> ${h.focus}/${h.focusMax}</div>
+            <div class="bar"><div class="fill focus" style="width:${h.focusMax ? (h.focus / h.focusMax) * 100 : 0}%"></div></div>
+          </div>
+        </div>
+        <div class="row-6" style="margin-top: 14px;">
+          <div class="stat"><div class="name">Might</div><div class="value">${h.might}</div></div>
+          <div class="stat"><div class="name">Finesse</div><div class="value">${h.finesse}</div></div>
+          <div class="stat"><div class="name">Mind</div><div class="value">${h.mind}</div></div>
+          <div class="stat"><div class="name">Spirit</div><div class="value">${h.spirit}</div></div>
+          <div class="stat"><div class="name">Guard</div><div class="value">${h.guard}</div></div>
+          <div class="stat"><div class="name">Power Cost</div><div class="value">2</div></div>
+        </div>
+        <div style="margin-top: 14px;">
+          <strong>Inventory</strong>
+          <div class="inventory" style="margin-top:8px;">
+            ${h.inventory.length ? h.inventory.map(item => `<span>${item}</span>`).join('') : '<span>Empty pack</span>'}
+          </div>
+        </div>
+      `;
+    }
+
+    function spawnEnemy() {
+      if (!state.hero) {
+        logLine('Create a hero first.');
+        return;
+      }
+      const base = enemyTemplates[rollRange(0, enemyTemplates.length - 1)];
+      const bonus = Math.max(0, state.hero.level - 1);
+      state.enemy = {
+        name: base.name,
+        guard: base.guard + Math.floor(bonus / 2),
+        vitalityMax: base.vitality + bonus * 4,
+        vitality: base.vitality + bonus * 4,
+        damageMin: base.damageMin + Math.floor(bonus / 2),
+        damageMax: base.damageMax + bonus,
+        xp: base.xp + bonus * 5,
+        gold: rollRange(6, 20) + bonus * 3,
+      };
+      renderBattle();
+      logLine(`A ${state.enemy.name} appears.`);
+    }
+
+    function renderBattle() {
+      const box = document.getElementById('battleStatus');
+      if (!state.hero) {
+        box.innerHTML = '<p class="muted">No hero ready.</p>';
+        return;
+      }
+      const h = state.hero;
+      const enemyHTML = state.enemy ? `
+        <div class="card" style="margin: 12px 0 0; background:#151a22;">
+          <h3>${state.enemy.name}</h3>
+          <div class="pill">Guard ${state.enemy.guard}</div>
+          <div class="pill">Vitality ${state.enemy.vitality}/${state.enemy.vitalityMax}</div>
+          <div class="bar"><div class="fill vitality" style="width:${(state.enemy.vitality / state.enemy.vitalityMax) * 100}%"></div></div>
+        </div>
+      ` : '<p class="muted" style="margin-top:12px;">No enemy spawned.</p>';
+
+      box.innerHTML = `
+        <div class="row">
+          <div>
+            <h3>${h.name}</h3>
+            <div class="pill">${h.path}</div>
+            <div class="pill">Guard ${h.guard}</div>
+            <div class="pill">Vitality ${h.vitality}/${h.vitalityMax}</div>
+            <div class="pill">Focus ${h.focus}/${h.focusMax}</div>
+          </div>
+          <div>
+            <div><strong>Basic Attack:</strong> d20 + prime stat mod + level</div>
+            <div><strong>Damage:</strong> 1d8 + prime stat mod</div>
+            <div><strong>Power:</strong> ${h.power} (2 Focus)</div>
+          </div>
+        </div>
+        ${enemyHTML}
+      `;
+    }
+
+    function getPrimeMod(hero) {
+      const prime = classData[hero.path].prime;
+      return modifier(hero[prime]);
+    }
+
+    function attackEnemy() {
+      if (!state.hero || !state.enemy) {
+        logLine('You need both a hero and an enemy.');
+        return;
+      }
+      const h = state.hero;
+      const roll = rollDie(20);
+      const total = roll + getPrimeMod(h) + h.level;
+      if (roll === 20) {
+        const dmg = rollDie(8) + rollDie(8) + Math.max(1, getPrimeMod(h));
+        state.enemy.vitality -= dmg;
+        logLine(`Critical hit! ${h.name} deals ${dmg} damage to ${state.enemy.name}.`);
+      } else if (roll === 1) {
+        logLine(`${h.name} fumbles the attack.`);
+      } else if (total >= state.enemy.guard) {
+        const dmg = rollDie(8) + Math.max(1, getPrimeMod(h));
+        state.enemy.vitality -= dmg;
+        logLine(`${h.name} hits ${state.enemy.name} (${total} vs Guard ${state.enemy.guard}) for ${dmg} damage.`);
+      } else {
+        logLine(`${h.name} misses ${state.enemy.name} (${total} vs Guard ${state.enemy.guard}).`);
+      }
+      checkEnemyDefeat();
+      renderBattle();
+    }
+
+    function usePower() {
+      if (!state.hero || !state.enemy) {
+        logLine('You need both a hero and an enemy.');
+        return;
+      }
+      const h = state.hero;
+      if (h.focus < 2) {
+        logLine(`${h.name} lacks the Focus to use ${h.power}.`);
+        return;
+      }
+      h.focus -= 2;
+      let dmg = 0;
+      let extra = '';
+
+      switch (h.path) {
+        case 'Vanguard':
+          dmg = rollDie(10) + rollDie(6) + Math.max(2, modifier(h.might));
+          state.enemy.guard = Math.max(8, state.enemy.guard - 1);
+          extra = ' The enemy loses 1 Guard.';
+          break;
+        case 'Shade':
+          dmg = rollDie(6) + rollDie(6) + rollDie(6) + Math.max(2, modifier(h.finesse));
+          extra = ' Precision tears through weak points.';
+          break;
+        case 'Arcanist':
+          dmg = rollDie(12) + Math.max(2, modifier(h.mind));
+          extra = ' Arcane force cracks the air.';
+          break;
+        case 'Warden':
+          dmg = rollDie(8) + Math.max(2, modifier(h.spirit));
+          h.vitality = Math.min(h.vitalityMax, h.vitality + 4);
+          extra = ' Sacred energy restores 4 Vitality.';
+          break;
+        case 'Ranger':
+          dmg = rollDie(8) + rollDie(8) + Math.max(2, modifier(h.finesse));
+          extra = ' Twin strikes land in quick succession.';
+          break;
+      }
+
+      state.enemy.vitality -= dmg;
+      logLine(`${h.name} uses ${h.power} and deals ${dmg} damage.${extra}`);
+      checkEnemyDefeat();
+      renderHero();
+      renderBattle();
+    }
+
+    function enemyTurn() {
+      if (!state.hero || !state.enemy) {
+        logLine('No enemy turn to take.');
+        return;
+      }
+      const roll = rollDie(20) + 3;
+      if (roll >= state.hero.guard) {
+        const dmg = rollRange(state.enemy.damageMin, state.enemy.damageMax);
+        state.hero.vitality = Math.max(0, state.hero.vitality - dmg);
+        logLine(`${state.enemy.name} hits ${state.hero.name} for ${dmg} damage.`);
+      } else {
+        logLine(`${state.enemy.name} misses ${state.hero.name}.`);
+      }
+      if (state.hero.vitality <= 0) {
+        logLine(`${state.hero.name} falls in battle.`);
+      }
+      renderHero();
+      renderBattle();
+    }
+
+    function checkEnemyDefeat() {
+      if (state.enemy && state.enemy.vitality <= 0) {
+        state.hero.xp += state.enemy.xp;
+        state.hero.gold += state.enemy.gold;
+        logLine(`${state.hero.name} defeats ${state.enemy.name} and gains ${state.enemy.xp} XP and ${state.enemy.gold} gold.`);
+        maybeLevelUp();
+        lootDrop();
+        state.enemy = null;
+        renderHero();
+        renderBattle();
+      }
+    }
+
+    function maybeLevelUp() {
+      while (state.hero.xp >= state.hero.level * 100) {
+        state.hero.xp -= state.hero.level * 100;
+        state.hero.level += 1;
+        state.hero.vitalityMax += 4;
+        state.hero.vitality = state.hero.vitalityMax;
+        state.hero.focusMax += 1;
+        state.hero.focus = state.hero.focusMax;
+        logLine(`${state.hero.name} reaches level ${state.hero.level}!`);
+        document.getElementById('level').value = state.hero.level;
+      }
+    }
+
+    function lootDrop() {
+      const table = ['Iron Blade', 'Smoke Bomb', 'Traveler Cloak', 'Moon Herb', 'Hunter Bowstring', 'Rune Charm', 'Silver Flask'];
+      if (rollDie(100) <= 45) {
+        const item = table[rollRange(0, table.length - 1)];
+        state.hero.inventory.push(item);
+        logLine(`${state.hero.name} finds: ${item}.`);
+      }
+    }
+
+    function resetBattle() {
+      state.enemy = null;
+      if (state.hero) {
+        state.hero.vitality = state.hero.vitalityMax;
+        state.hero.focus = state.hero.focusMax;
+      }
+      renderHero();
+      renderBattle();
+      logLine('Battlefield reset.');
+    }
+
+    function manualRoll(sides) {
+      const result = rollDie(sides);
+      logLine(`Rolled d${sides}: ${result}`);
+    }
+
+    function customRoll() {
+      const sides = Math.max(2, Number(document.getElementById('customSides').value || 20));
+      const bonus = Number(document.getElementById('customBonus').value || 0);
+      const roll = rollDie(sides);
+      logLine(`Rolled d${sides}: ${roll}${bonus ? ` + ${bonus} = ${roll + bonus}` : ''}`);
+    }
+
+    function statRoll() {
+      const rolls = [rollDie(6), rollDie(6), rollDie(6), rollDie(6)].sort((a, b) => b - a);
+      return rolls[0] + rolls[1] + rolls[2];
+    }
+
+    function rollAllStats() {
+      document.getElementById('might').value = statRoll();
+      document.getElementById('finesse').value = statRoll();
+      document.getElementById('mind').value = statRoll();
+      document.getElementById('spirit').value = statRoll();
+      document.getElementById('guard').value = 10 + modifier(document.getElementById('finesse').value);
+      logLine('New random stats rolled.');
+    }
+
+    function grantStarterLoot() {
+      if (!state.hero) createHero();
+      const starters = {
+        Vanguard: ['Iron Longblade', 'Kite Shield'],
+        Shade: ['Twin Knives', 'Lockpick Set'],
+        Arcanist: ['Oak Staff', 'Rune Book'],
+        Warden: ['Blessed Mace', 'Sun Sigil'],
+        Ranger: ['Shortbow', 'Trail Kit'],
+      };
+      state.hero.inventory.push(...starters[state.hero.path]);
+      renderHero();
+      logLine(`${state.hero.name} receives starting gear.`);
+    }
+
+    function addQuest() {
+      const title = document.getElementById('questTitle').value.trim();
+      const reward = document.getElementById('questReward').value.trim();
+      const desc = document.getElementById('questDesc').value.trim();
+      if (!title) {
+        logLine('Quest needs a title.');
+        return;
+      }
+      state.quests.unshift({ title, reward, desc, done: false });
+      document.getElementById('questTitle').value = '';
+      document.getElementById('questReward').value = '';
+      document.getElementById('questDesc').value = '';
+      renderQuests();
+      logLine(`Quest added: ${title}`);
+    }
+
+    function toggleQuest(i) {
+      state.quests[i].done = !state.quests[i].done;
+      renderQuests();
+    }
+
+    function renderQuests() {
+      const box = document.getElementById('questList');
+      if (!state.quests.length) {
+        box.innerHTML = '<p class="muted">No quests yet.</p>';
+        return;
+      }
+      box.innerHTML = state.quests.map((q, i) => `
+        <div class="card" style="background:#151a22; margin-bottom:10px;">
+          <div class="section-head">
+            <h3 style="margin:0;">${q.done ? '✓ ' : ''}${q.title}</h3>
+            <button onclick="toggleQuest(${i})" style="max-width:130px;">${q.done ? 'Mark Active' : 'Mark Done'}</button>
+          </div>
+          <div class="pill">Reward: ${q.reward || 'Unknown'}</div>
+          <p style="margin-top:10px;">${q.desc || 'No notes.'}</p>
+        </div>
+      `).join('');
+    }
+
+    function generateQuest() {
+      const places = ['Black Marsh', 'Glass Hollow', 'Ember Watch', 'Stonefen', 'Moonfall Ruins'];
+      const targets = ['bandits', 'a grave beast', 'a rogue sorcerer', 'ash wolves', 'a broken relic'];
+      const goals = ['recover', 'hunt', 'escort', 'seal', 'investigate'];
+      const rewards = ['60 gold', 'a rare dagger', 'an enchanted cloak', '80 gold', 'a spirit charm'];
+      const goal = goals[rollRange(0, goals.length - 1)];
+      const place = places[rollRange(0, places.length - 1)];
+      const target = targets[rollRange(0, targets.length - 1)];
+      document.getElementById('questTitle').value = `${goal.charAt(0).toUpperCase() + goal.slice(1)} at ${place}`;
+      document.getElementById('questReward').value = rewards[rollRange(0, rewards.length - 1)];
+      document.getElementById('questDesc').value = `Travel to ${place} and deal with ${target}.`;
+      logLine('Random quest generated.');
+    }
+
+    function saveGame() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      logLine('Game saved to browser storage.');
+    }
+
+    function loadGame() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        logLine('No saved game found in browser storage.');
+        return;
+      }
+      state = JSON.parse(raw);
+      syncFormFromHero();
+      renderAll();
+      logLine('Game loaded from browser storage.');
+    }
+
+    function exportGame() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ashen-realm-save.json';
+      a.click();
+      URL.revokeObjectURL(url);
+      logLine('Save exported as JSON.');
+    }
+
+    function importGame(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          state = JSON.parse(reader.result);
+          syncFormFromHero();
+          renderAll();
+          logLine('Save imported successfully.');
+        } catch (err) {
+          logLine('Import failed: invalid save file.');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function syncFormFromHero() {
+      if (!state.hero) return;
+      document.getElementById('heroName').value = state.hero.name || '';
+      document.getElementById('heroClass').value = state.hero.path || 'Vanguard';
+      document.getElementById('might').value = state.hero.might ?? 14;
+      document.getElementById('finesse').value = state.hero.finesse ?? 12;
+      document.getElementById('mind').value = state.hero.mind ?? 10;
+      document.getElementById('spirit').value = state.hero.spirit ?? 10;
+      document.getElementById('guard').value = state.hero.guard ?? 13;
+      document.getElementById('level').value = state.hero.level ?? 1;
+    }
+
+    function renderAll() {
+      renderHero();
+      renderBattle();
+      renderQuests();
+      renderLog();
+    }
+
+    renderAll();
+    logLine('Ashen Realm ready. Create a hero to begin.');
+  </script></body>
+</html>
