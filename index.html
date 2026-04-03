@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,239 +16,275 @@
       --good: #72c38f;
       --border: #303847;
       --shadow: 0 12px 28px rgba(0,0,0,.26);
-    }
+    }* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: linear-gradient(180deg, #0d1015, #141922);
+  color: var(--text);
+  font-family: Inter, Arial, sans-serif;
+}
 
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: linear-gradient(180deg, #0d1015, #141922);
-      color: var(--text);
-      font-family: Inter, Arial, sans-serif;
-    }
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+}
 
-    .wrap {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 16px;
-    }
+h1, h2, h3, h4, p { margin: 0; }
 
-    h1, h2, h3, h4, p { margin: 0; }
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
 
-    .topbar {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
+.title {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
-    .title {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
+.muted, .tiny { color: var(--muted); }
+.tiny { font-size: 12px; }
 
-    .muted, .tiny { color: var(--muted); }
-    .tiny { font-size: 12px; }
+.grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 16px;
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 16px;
-    }
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 
-    .stack {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+.card {
+  background: rgba(23,29,38,.96);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
 
-    .card {
-      background: rgba(23,29,38,.96);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 16px;
-      box-shadow: var(--shadow);
-    }
+.section-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
 
-    .section-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
+.row, .row-3, .row-4, .row-6 {
+  display: grid;
+  gap: 10px;
+}
+.row { grid-template-columns: repeat(2, 1fr); }
+.row-3 { grid-template-columns: repeat(3, 1fr); }
+.row-4 { grid-template-columns: repeat(4, 1fr); }
+.row-6 { grid-template-columns: repeat(6, 1fr); }
 
-    .row, .row-3, .row-4, .row-6 {
-      display: grid;
-      gap: 10px;
-    }
-    .row { grid-template-columns: repeat(2, 1fr); }
-    .row-3 { grid-template-columns: repeat(3, 1fr); }
-    .row-4 { grid-template-columns: repeat(4, 1fr); }
-    .row-6 { grid-template-columns: repeat(6, 1fr); }
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.actions > * { flex: 1 1 140px; }
 
-    .actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .actions > * { flex: 1 1 140px; }
+label {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
 
-    label {
-      display: block;
-      font-size: 13px;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
+input, select, textarea, button {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--text);
+  padding: 11px 12px;
+  font-size: 14px;
+}
 
-    input, select, textarea, button {
-      width: 100%;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--panel-2);
-      color: var(--text);
-      padding: 11px 12px;
-      font-size: 14px;
-    }
+textarea { min-height: 88px; resize: vertical; }
 
-    textarea { min-height: 88px; resize: vertical; }
+button {
+  cursor: pointer;
+  font-weight: 700;
+  transition: transform .08s ease, filter .12s ease;
+}
+button:hover { filter: brightness(1.05); }
+button:active { transform: translateY(1px); }
 
-    button {
-      cursor: pointer;
-      font-weight: 700;
-      transition: transform .08s ease, filter .12s ease;
-    }
-    button:hover { filter: brightness(1.05); }
-    button:active { transform: translateY(1px); }
+.btn-accent { background: var(--accent); color: #1f1708; border: none; }
+.btn-danger { background: var(--danger); color: white; border: none; }
+.btn-good { background: var(--good); color: #0b2314; border: none; }
 
-    .btn-accent { background: var(--accent); color: #1f1708; border: none; }
-    .btn-danger { background: var(--danger); color: white; border: none; }
-    .btn-good { background: var(--good); color: #0b2314; border: none; }
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  background: #121822;
+  padding: 7px 11px;
+  border-radius: 999px;
+  font-size: 13px;
+  color: var(--muted);
+  margin: 4px 6px 0 0;
+}
 
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid var(--border);
-      background: #121822;
-      padding: 7px 11px;
-      border-radius: 999px;
-      font-size: 13px;
-      color: var(--muted);
-      margin: 4px 6px 0 0;
-    }
+.subcard {
+  background: var(--panel-3);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px;
+}
 
-    .subcard {
-      background: var(--panel-3);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px;
-    }
+.stat {
+  background: #131a24;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 10px;
+  text-align: center;
+}
+.stat .name { color: var(--muted); font-size: 12px; margin-bottom: 4px; }
+.stat .value { font-size: 24px; font-weight: 800; }
 
-    .stat {
-      background: #131a24;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 10px;
-      text-align: center;
-    }
-    .stat .name { color: var(--muted); font-size: 12px; margin-bottom: 4px; }
-    .stat .value { font-size: 24px; font-weight: 800; }
+.bar {
+  width: 100%;
+  height: 12px;
+  background: #0b0f14;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 6px;
+}
 
-    .bar {
-      width: 100%;
-      height: 12px;
-      background: #0b0f14;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      overflow: hidden;
-      margin-top: 6px;
-    }
+.fill { height: 100%; transition: width .2s ease; }
+.fill.vitality { background: linear-gradient(90deg, #a64141, #d96b6b); }
+.fill.focus { background: linear-gradient(90deg, #4567cc, #7da0ff); }
+.fill.xp { background: linear-gradient(90deg, #9b7b3c, #d6a85f); }
 
-    .fill { height: 100%; transition: width .2s ease; }
-    .fill.vitality { background: linear-gradient(90deg, #a64141, #d96b6b); }
-    .fill.focus { background: linear-gradient(90deg, #4567cc, #7da0ff); }
-    .fill.xp { background: linear-gradient(90deg, #9b7b3c, #d6a85f); }
+.inventory, .equipment-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.inventory span, .equipment-list span {
+  background: #101720;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 8px 10px;
+  font-size: 13px;
+}
 
-    .inventory, .equipment-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 8px;
-    }
-    .inventory span, .equipment-list span {
-      background: #101720;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 8px 10px;
-      font-size: 13px;
-    }
+.battle-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
 
-    .battle-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-top: 12px;
-    }
+.log {
+  background: #0d1219;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 12px;
+  min-height: 260px;
+  max-height: 480px;
+  overflow: auto;
+  white-space: pre-wrap;
+  line-height: 1.45;
+  font-size: 14px;
+}
 
-    .log {
-      background: #0d1219;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      padding: 12px;
-      min-height: 260px;
-      max-height: 480px;
-      overflow: auto;
-      white-space: pre-wrap;
-      line-height: 1.45;
-      font-size: 14px;
-    }
+.quest-list, .shop-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
 
-    .quest-list, .shop-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 12px;
-    }
+.quest-card, .shop-item {
+  background: var(--panel-3);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px;
+}
 
-    .quest-card, .shop-item {
-      background: var(--panel-3);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px;
-    }
+.quest-top, .shop-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
 
-    .quest-top, .shop-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 8px;
-    }
+.status-banner {
+  background: #111924;
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 14px;
+  padding: 10px 12px;
+  margin-top: 12px;
+}
 
-    .status-banner {
-      background: #111924;
-      border: 1px solid var(--border);
-      color: var(--text);
-      border-radius: 14px;
-      padding: 10px 12px;
-      margin-top: 12px;
-    }
+.map-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
 
-    @media (max-width: 980px) {
-      .grid { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 760px) {
-      .row, .row-3, .row-4, .row-6, .battle-grid { grid-template-columns: 1fr 1fr; }
-      .actions > * { flex: 1 1 120px; }
-    }
-    @media (max-width: 520px) {
-      .wrap { padding: 12px; }
-      .row, .row-3, .row-4, .row-6, .battle-grid { grid-template-columns: 1fr; }
-      .section-head, .quest-top, .shop-top { flex-direction: column; align-items: flex-start; }
-    }
+.map-node {
+  background: #101720;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px;
+  min-height: 108px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.map-node.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px rgba(214,168,95,.35) inset;
+}
+
+.map-node.locked {
+  opacity: .6;
+}
+
+.map-node h4 {
+  font-size: 14px;
+}
+
+.map-meta {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+@media (max-width: 980px) {
+  .grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .row, .row-3, .row-4, .row-6, .battle-grid { grid-template-columns: 1fr 1fr; }
+  .actions > * { flex: 1 1 120px; }
+}
+@media (max-width: 520px) {
+  .wrap { padding: 12px; }
+  .row, .row-3, .row-4, .row-6, .battle-grid { grid-template-columns: 1fr; }
+  .section-head, .quest-top, .shop-top { flex-direction: column; align-items: flex-start; }
+}
+
   </style>
 </head>
 <body>
@@ -266,185 +301,185 @@
         <button onclick="document.getElementById('importFile').click()">Import Save</button>
         <input id="importFile" type="file" accept="application/json" style="display:none" onchange="importGame(event)" />
       </div>
+    </div><div class="grid">
+  <div class="stack">
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <h2>Character Creator</h2>
+          <div class="tiny">Stats, class, starter gear, and proper scaling.</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="heroName">Name</label>
+          <input id="heroName" placeholder="Ashen, Kael, Mira..." />
+        </div>
+        <div>
+          <label for="heroClass">Path</label>
+          <select id="heroClass">
+            <option value="Vanguard">Vanguard</option>
+            <option value="Shade">Shade</option>
+            <option value="Arcanist">Arcanist</option>
+            <option value="Warden">Warden</option>
+            <option value="Ranger">Ranger</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row-6" style="margin-top: 12px;">
+        <div><label>Might</label><input id="might" type="number" min="1" max="20" value="14" /></div>
+        <div><label>Finesse</label><input id="finesse" type="number" min="1" max="20" value="12" /></div>
+        <div><label>Mind</label><input id="mind" type="number" min="1" max="20" value="10" /></div>
+        <div><label>Spirit</label><input id="spirit" type="number" min="1" max="20" value="10" /></div>
+        <div><label>Guard</label><input id="guard" type="number" min="8" max="25" value="13" /></div>
+        <div><label>Level</label><input id="level" type="number" min="1" max="20" value="1" /></div>
+      </div>
+
+      <div class="actions" style="margin-top: 14px;">
+        <button class="btn-accent" onclick="createHero()">Create / Update Hero</button>
+        <button onclick="rollAllStats()">Roll Random Stats</button>
+        <button onclick="grantStarterLoot()">Starter Loot</button>
+        <button onclick="restHero()">Short Rest</button>
+      </div>
     </div>
 
-    <div class="grid">
-      <div class="stack">
-        <div class="card">
-          <div class="section-head">
-            <div>
-              <h2>Character Creator</h2>
-              <div class="tiny">Stats, class, starter gear, and proper scaling.</div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div>
-              <label for="heroName">Name</label>
-              <input id="heroName" placeholder="Ashen, Kael, Mira..." />
-            </div>
-            <div>
-              <label for="heroClass">Path</label>
-              <select id="heroClass">
-                <option value="Vanguard">Vanguard</option>
-                <option value="Shade">Shade</option>
-                <option value="Arcanist">Arcanist</option>
-                <option value="Warden">Warden</option>
-                <option value="Ranger">Ranger</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="row-6" style="margin-top: 12px;">
-            <div><label>Might</label><input id="might" type="number" min="1" max="20" value="14" /></div>
-            <div><label>Finesse</label><input id="finesse" type="number" min="1" max="20" value="12" /></div>
-            <div><label>Mind</label><input id="mind" type="number" min="1" max="20" value="10" /></div>
-            <div><label>Spirit</label><input id="spirit" type="number" min="1" max="20" value="10" /></div>
-            <div><label>Guard</label><input id="guard" type="number" min="8" max="25" value="13" /></div>
-            <div><label>Level</label><input id="level" type="number" min="1" max="20" value="1" /></div>
-          </div>
-
-          <div class="actions" style="margin-top: 14px;">
-            <button class="btn-accent" onclick="createHero()">Create / Update Hero</button>
-            <button onclick="rollAllStats()">Roll Random Stats</button>
-            <button onclick="grantStarterLoot()">Starter Loot</button>
-            <button onclick="restHero()">Short Rest</button>
-          </div>
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <h2>Hero Sheet</h2>
+          <div class="tiny">Leveling, equipment, inventory, and resources.</div>
         </div>
+      </div>
+      <div id="heroSheet"></div>
+    </div>
 
-        <div class="card">
-          <div class="section-head">
-            <div>
-              <h2>Hero Sheet</h2>
-              <div class="tiny">Leveling, equipment, inventory, and resources.</div>
-            </div>
-          </div>
-          <div id="heroSheet"></div>
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <h2>World Map</h2>
+          <div class="tiny">Travel between locations, trigger events, and explore the realm.</div>
         </div>
+      </div>
+      <div id="mapPanel"></div>
+    </div>
 
-        <div class="card">
-          <div class="section-head">
-            <div>
-              <h2>Journal</h2>
-              <div class="tiny">Add quests or generate quick hooks.</div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div>
-              <label for="questTitle">Quest Title</label>
-              <input id="questTitle" placeholder="The Black Marsh" />
-            </div>
-            <div>
-              <label for="questReward">Reward</label>
-              <input id="questReward" placeholder="75 gold, iron dagger" />
-            </div>
-          </div>
-
-          <div style="margin-top: 12px;">
-            <label for="questDesc">Quest Notes</label>
-            <textarea id="questDesc" placeholder="Track the raiders to the old tower..."></textarea>
-          </div>
-
-          <div class="actions" style="margin-top: 12px;">
-            <button class="btn-good" onclick="addQuest()">Add Quest</button>
-            <button onclick="generateQuest()">Generate Random Quest</button>
-          </div>
-
-          <div id="questList" class="quest-list"></div>
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <h2>Journal</h2>
+          <div class="tiny">Add quests or generate quick hooks.</div>
         </div>
       </div>
 
-      <div class="stack">
-        <div class="card">
-          <div class="section-head">
-            <div>
-              <h2>Combat Arena</h2>
-              <div class="tiny">Basic attacks, class powers, enemy abilities, clean feedback.</div>
-            </div>
-          </div>
-
-          <div class="actions">
-            <button class="btn-accent" onclick="spawnEnemy()">Spawn Enemy</button>
-            <button onclick="attackEnemy()">Attack</button>
-            <button onclick="usePower()">Use Power</button>
-            <button onclick="drinkPotion()">Use Potion</button>
-            <button onclick="enemyTurn()">Enemy Turn</button>
-            <button class="btn-danger" onclick="resetBattle()">Reset Battle</button>
-          </div>
-
-          <div id="battleStatus"></div>
-          <div id="battleMessage" class="status-banner tiny">No battle yet.</div>
+      <div class="row">
+        <div>
+          <label for="questTitle">Quest Title</label>
+          <input id="questTitle" placeholder="The Black Marsh" />
         </div>
-
-        <div class="card">
-          <div class="section-head">
-            <div>
-              <h2>Shop & Loot</h2>
-              <div class="tiny">Buy useful gear and consumables with gold.</div>
-            </div>
-          </div>
-          <div class="actions">
-            <button onclick="generateShop()">Refresh Shop</button>
-          </div>
-          <div id="shopList" class="shop-list"></div>
-        </div>
-
-        <div class="card">
-          <div class="section-head">
-            <div>
-              <h2>Dice & Utility</h2>
-              <div class="tiny">Checks, random tables, traps, or treasure.</div>
-            </div>
-          </div>
-
-          <div class="row-3">
-            <button onclick="manualRoll(6)">Roll d6</button>
-            <button onclick="manualRoll(12)">Roll d12</button>
-            <button onclick="manualRoll(20)">Roll d20</button>
-          </div>
-
-          <div class="row" style="margin-top: 12px;">
-            <div>
-              <label for="customSides">Custom Die</label>
-              <input id="customSides" type="number" min="2" value="8" />
-            </div>
-            <div>
-              <label for="customBonus">Bonus</label>
-              <input id="customBonus" type="number" value="0" />
-            </div>
-          </div>
-
-          <div style="margin-top: 12px;">
-            <label for="diceExpression">Dice Expression</label>
-            <input id="diceExpression" value="1d20+3" placeholder="Examples: 2d6+4, 1d8, 4d6kh3" />
-          </div>
-
-          <div class="actions" style="margin-top: 12px;">
-            <button onclick="customRoll()">Roll Custom</button>
-            <button onclick="rollExpressionFromInput()">Roll Expression</button>
-            <button onclick="clearLog()">Clear Log</button>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="section-head">
-            <div>
-              <h2>Adventure Log</h2>
-              <div class="tiny">Combat results, treasure, and progress.</div>
-            </div>
-          </div>
-          <div id="log" class="log"></div>
+        <div>
+          <label for="questReward">Reward</label>
+          <input id="questReward" placeholder="75 gold, iron dagger" />
         </div>
       </div>
+
+      <div style="margin-top: 12px;">
+        <label for="questDesc">Quest Notes</label>
+        <textarea id="questDesc" placeholder="Track the raiders to the old tower..."></textarea>
+      </div>
+
+      <div class="actions" style="margin-top: 12px;">
+        <button class="btn-good" onclick="addQuest()">Add Quest</button>
+        <button onclick="generateQuest()">Generate Random Quest</button>
+      </div>
+
+      <div id="questList" class="quest-list"></div>
     </div>
   </div>
 
-  <script>
-    const STORAGE_KEY = 'ashen_realm_save_v4';
+  <div class="stack">
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <h2>Combat Arena</h2>
+          <div class="tiny">Basic attacks, class powers, enemy abilities, clean feedback.</div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-accent" onclick="spawnEnemy()">Spawn Enemy</button>
+        <button onclick="attackEnemy()">Attack</button>
+        <button onclick="usePower()">Use Power</button>
+        <button onclick="drinkPotion()">Use Potion</button>
+        <button onclick="enemyTurn()">Enemy Turn</button>
+        <button class="btn-danger" onclick="resetBattle()">Reset Battle</button>
+      </div>
+
+      <div id="battleStatus"></div>
+      <div id="battleMessage" class="status-banner tiny">No battle yet.</div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <h2>Shop & Loot</h2>
+          <div class="tiny">Buy useful gear and consumables with gold.</div>
+        </div>
+      </div>
+      <div class="actions">
+        <button onclick="generateShop()">Refresh Shop</button>
+      </div>
+      <div id="shopList" class="shop-list"></div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <h2>Dice & Utility</h2>
+          <div class="tiny">Checks, random tables, traps, or treasure.</div>
+        </div>
+      </div>
+
+      <div class="row-3">
+        <button onclick="manualRoll(6)">Roll d6</button>
+        <button onclick="manualRoll(12)">Roll d12</button>
+        <button onclick="manualRoll(20)">Roll d20</button>
+      </div>
+
+      <div class="row" style="margin-top: 12px;">
+        <div>
+          <label for="customSides">Custom Die</label>
+          <input id="customSides" type="number" min="2" value="8" />
+        </div>
+        <div>
+          <label for="customBonus">Bonus</label>
+          <input id="customBonus" type="number" value="0" />
+        </div>
+      </div>
+
+      <div class="actions" style="margin-top: 12px;">
+        <button onclick="customRoll()">Roll Custom</button>
+        <button onclick="clearLog()">Clear Log</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <div>
+          <h2>Adventure Log</h2>
+          <div class="tiny">Combat results, treasure, and progress.</div>
+        </div>
+      </div>
+      <div id="log" class="log"></div>
+    </div>
+  </div>
+</div>
+
+  </div>  <script>
+    const STORAGE_KEY = 'ashen_realm_save_v3';
     const POWER_COST = 2;
     const POTION_HEAL = 12;
-    const DEFAULT_DICE_EXPRESSION = '1d20+3';
 
     const classData = {
       Vanguard: {
@@ -527,6 +562,18 @@
       { name: 'Vitality Sigil', price: 34, type: 'upgrade', effect: '+5 max Vitality.' }
     ];
 
+    const worldTemplate = [
+      { id: 'ashen-crossing', name: 'Ashen Crossing', type: 'town', x: 0, y: 0, danger: 1, desc: 'A trade post with supplies and rumors.' },
+      { id: 'black-marsh', name: 'Black Marsh', type: 'wilds', x: 1, y: 0, danger: 2, desc: 'Wet ground, bad air, and lurking beasts.' },
+      { id: 'glass-hollow', name: 'Glass Hollow', type: 'wilds', x: 2, y: 0, danger: 2, desc: 'Shattered stone fields and scavengers.' },
+      { id: 'ember-watch', name: 'Ember Watch', type: 'town', x: 0, y: 1, danger: 1, desc: 'A fortified outpost on the old road.' },
+      { id: 'stonefen', name: 'Stonefen', type: 'wilds', x: 1, y: 1, danger: 3, desc: 'Broken ruins where danger gathers.' },
+      { id: 'moonfall-ruins', name: 'Moonfall Ruins', type: 'dungeon', x: 2, y: 1, danger: 4, desc: 'Collapsed halls haunted by forgotten power.' },
+      { id: 'sunspire', name: 'Sunspire', type: 'town', x: 0, y: 2, danger: 2, desc: 'A beacon city where wardens keep order.' },
+      { id: 'grave-road', name: 'Grave Road', type: 'wilds', x: 1, y: 2, danger: 4, desc: 'A cursed path where many vanished.' },
+      { id: 'void-gate', name: 'Void Gate', type: 'dungeon', x: 2, y: 2, danger: 5, desc: 'A sealed place pulsing with hostile power.' }
+    ];
+
     let state = createInitialState();
 
     function createInitialState() {
@@ -536,7 +583,17 @@
         quests: [],
         shop: [],
         log: [],
-        battleMessage: 'No battle yet.'
+        battleMessage: 'No battle yet.',
+        world: createWorldState(),
+        travelDays: 0
+      };
+    }
+
+    function createWorldState() {
+      return {
+        current: 'ashen-crossing',
+        unlocked: ['ashen-crossing', 'black-marsh', 'ember-watch', 'stonefen'],
+        visited: ['ashen-crossing']
       };
     }
 
@@ -550,61 +607,6 @@
 
     function rollDie(sides) {
       return Math.floor(Math.random() * sides) + 1;
-    }
-
-    function rollDice(count, sides) {
-      const rolls = [];
-      for (let i = 0; i < count; i += 1) {
-        rolls.push(rollDie(sides));
-      }
-      return rolls;
-    }
-
-    function parseDiceExpression(input) {
-      const cleaned = String(input || '').trim().toLowerCase().replace(/\s+/g, '');
-      const match = cleaned.match(/^(\d*)d(\d+)(kh(\d+)|kl(\d+))?([+-]\d+)?$/i);
-      if (!match) return null;
-
-      const count = Number(match[1] || 1);
-      const sides = Number(match[2]);
-      const keepHigh = match[4] ? Number(match[4]) : null;
-      const keepLow = match[5] ? Number(match[5]) : null;
-      const modifierValue = Number(match[6] || 0);
-
-      if (!count || !sides || count < 1 || count > 100 || sides < 2 || sides > 1000) return null;
-      if (keepHigh && (keepHigh < 1 || keepHigh > count)) return null;
-      if (keepLow && (keepLow < 1 || keepLow > count)) return null;
-
-      return { count, sides, keepHigh, keepLow, modifierValue, source: cleaned };
-    }
-
-    function evaluateDiceExpression(input) {
-      const parsed = parseDiceExpression(input);
-      if (!parsed) return null;
-
-      const rolls = rollDice(parsed.count, parsed.sides);
-      let kept = rolls.slice();
-
-      if (parsed.keepHigh) {
-        kept = rolls.slice().sort((a, b) => b - a).slice(0, parsed.keepHigh);
-      }
-      if (parsed.keepLow) {
-        kept = rolls.slice().sort((a, b) => a - b).slice(0, parsed.keepLow);
-      }
-
-      const subtotal = kept.reduce((sum, roll) => sum + roll, 0);
-      const total = subtotal + parsed.modifierValue;
-
-      return { parsed, rolls, kept, subtotal, total };
-    }
-
-    function formatDiceResult(result) {
-      const source = result.parsed.source;
-      const rolled = '[' + result.rolls.join(', ') + ']';
-      const keptDifferent = result.rolls.length !== result.kept.length || result.rolls.join(',') !== result.kept.join(',');
-      const kept = keptDifferent ? ' keep [' + result.kept.join(', ') + ']' : '';
-      const mod = result.parsed.modifierValue ? ' ' + (result.parsed.modifierValue > 0 ? '+' : '-') + ' ' + Math.abs(result.parsed.modifierValue) : '';
-      return source + ': ' + rolled + kept + mod + ' = ' + result.total;
     }
 
     function rollRange(min, max) {
@@ -623,7 +625,8 @@
     }
 
     function renderLog() {
-      document.getElementById('log').textContent = state.log.join('\n');
+      document.getElementById('log').textContent = state.log.join('
+');
     }
 
     function clearLog() {
@@ -688,6 +691,114 @@
       renderShop();
       logLine(`${state.hero.name} the ${state.hero.path} is ready.`);
       setBattleMessage('Hero prepared.');
+    }
+
+    function getCurrentLocation() {
+      return worldTemplate.find(location => location.id === state.world.current) || worldTemplate[0];
+    }
+
+    function isAdjacentLocation(fromId, toId) {
+      const from = worldTemplate.find(location => location.id === fromId);
+      const to = worldTemplate.find(location => location.id === toId);
+      if (!from || !to) return false;
+      const dx = Math.abs(from.x - to.x);
+      const dy = Math.abs(from.y - to.y);
+      return dx + dy === 1;
+    }
+
+    function unlockNearbyLocations(fromId) {
+      const from = worldTemplate.find(location => location.id === fromId);
+      if (!from) return;
+      worldTemplate.forEach(location => {
+        const dx = Math.abs(from.x - location.x);
+        const dy = Math.abs(from.y - location.y);
+        if (dx + dy === 1 && !state.world.unlocked.includes(location.id)) {
+          state.world.unlocked.push(location.id);
+        }
+      });
+    }
+
+    function renderMap() {
+      const box = document.getElementById('mapPanel');
+      if (!box) return;
+      const current = getCurrentLocation();
+      box.innerHTML = `
+        <div class="subcard">
+          <div><strong>Current Location:</strong> ${current.name}</div>
+          <div class="map-meta" style="margin-top:6px;">${current.desc}</div>
+          <div class="pill">Type: ${current.type}</div>
+          <div class="pill">Danger: ${current.danger}</div>
+          <div class="pill">Travel Days: ${state.travelDays}</div>
+        </div>
+        <div class="map-grid">
+          ${worldTemplate.map(location => {
+            const isCurrent = location.id === state.world.current;
+            const isUnlocked = state.world.unlocked.includes(location.id);
+            const canTravel = isUnlocked && !isCurrent && isAdjacentLocation(state.world.current, location.id);
+            return `
+              <div class="map-node ${isCurrent ? 'active' : ''} ${!isUnlocked ? 'locked' : ''}">
+                <div>
+                  <h4>${location.name}</h4>
+                  <div class="map-meta">${location.type} • danger ${location.danger}</div>
+                  <div class="map-meta" style="margin-top:6px;">${location.desc}</div>
+                </div>
+                <button ${canTravel ? '' : 'disabled'} onclick="travelTo('${location.id}')">${isCurrent ? 'You Are Here' : canTravel ? 'Travel' : isUnlocked ? 'Too Far' : 'Locked'}</button>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    function travelTo(locationId) {
+      if (!state.hero) {
+        logLine('Create a hero before traveling.');
+        return;
+      }
+      if (!state.world.unlocked.includes(locationId)) {
+        logLine('That destination is not unlocked yet.');
+        return;
+      }
+      if (!isAdjacentLocation(state.world.current, locationId)) {
+        logLine('You can only travel to adjacent locations.');
+        return;
+      }
+      if (state.enemy) {
+        logLine('Finish the current battle before traveling.');
+        return;
+      }
+
+      state.world.current = locationId;
+      state.travelDays += 1;
+      if (!state.world.visited.includes(locationId)) {
+        state.world.visited.push(locationId);
+      }
+      unlockNearbyLocations(locationId);
+
+      const location = getCurrentLocation();
+      logLine(`${state.hero.name} travels to ${location.name}.`);
+      setBattleMessage(`Arrived at ${location.name}.`);
+
+      if (location.type === 'town') {
+        state.hero.focus = Math.min(state.hero.focusMax, state.hero.focus + 1);
+        generateShop();
+        logLine(`${location.name} offers a safe stop. Focus +1 and shop refreshed.`);
+      } else {
+        const eventRoll = rollDie(100);
+        if (eventRoll <= 55) {
+          spawnEnemy();
+          logLine(`Danger finds you on the road to ${location.name}.`);
+        } else if (eventRoll <= 80) {
+          const foundGold = rollRange(6, 14) + location.danger * 2;
+          state.hero.gold += foundGold;
+          logLine(`${state.hero.name} discovers ${foundGold} gold near ${location.name}.`);
+        } else {
+          state.hero.potions += 1;
+          logLine(`${state.hero.name} finds a Healing Potion while exploring ${location.name}.`);
+        }
+      }
+
+      renderAll();
     }
 
     function renderHero() {
@@ -828,29 +939,26 @@
       }
 
       const h = state.hero;
-      const attackRoll = rollDie(20);
-      const attackBonus = getPrimeMod(h) + h.level + getAttackBonus(h);
-      const total = attackRoll + attackBonus;
+      const roll = rollDie(20);
+      const total = roll + getPrimeMod(h) + h.level + getAttackBonus(h);
 
-      if (attackRoll === 20) {
-        const damageRolls = rollDice(2, 8);
-        const dmg = damageRolls[0] + damageRolls[1] + Math.max(2, getPrimeMod(h) + getAttackBonus(h));
-        dealDamageToEnemy(dmg, `Critical hit! ${h.name} rolls [${damageRolls.join(', ')}] and deals ${dmg} damage to ${state.enemy.name}.`);
+      if (roll === 20) {
+        const dmg = rollDie(8) + rollDie(8) + Math.max(2, getPrimeMod(h) + getAttackBonus(h));
+        dealDamageToEnemy(dmg, `Critical hit! ${h.name} deals ${dmg} damage to ${state.enemy.name}.`);
         return;
       }
-      if (attackRoll === 1) {
-        logLine(`${h.name} fumbles the attack. Roll: 1 + ${attackBonus} = ${total}.`);
+      if (roll === 1) {
+        logLine(`${h.name} fumbles the attack.`);
         setBattleMessage('Attack failed badly.');
         renderBattle();
         return;
       }
 
       if (total >= state.enemy.guard) {
-        const damageRoll = rollDie(8);
-        const dmg = damageRoll + Math.max(1, getPrimeMod(h) + getAttackBonus(h));
-        dealDamageToEnemy(dmg, `${h.name} hits ${state.enemy.name}. Attack roll ${attackRoll} + ${attackBonus} = ${total} vs Guard ${state.enemy.guard}. Damage ${damageRoll} for total ${dmg}.`);
+        const dmg = rollDie(8) + Math.max(1, getPrimeMod(h) + getAttackBonus(h));
+        dealDamageToEnemy(dmg, `${h.name} hits ${state.enemy.name} (${total} vs Guard ${state.enemy.guard}) for ${dmg} damage.`);
       } else {
-        logLine(`${h.name} misses ${state.enemy.name}. Attack roll ${attackRoll} + ${attackBonus} = ${total} vs Guard ${state.enemy.guard}.`);
+        logLine(`${h.name} misses ${state.enemy.name} (${total} vs Guard ${state.enemy.guard}).`);
         setBattleMessage('Your attack misses.');
         renderBattle();
       }
@@ -901,21 +1009,17 @@
       let text = '';
 
       if (powerRoll < state.enemy.powerChance) {
-        const rollValue = rollRange(state.enemy.damageMin, state.enemy.damageMax);
-        dmg = rollValue + state.enemy.powerBonus;
+        dmg = rollRange(state.enemy.damageMin, state.enemy.damageMax) + state.enemy.powerBonus;
         state.hero.vitality = Math.max(0, state.hero.vitality - dmg);
-        text = `${state.enemy.name} ${state.enemy.powerText}. Damage ${rollValue} + ${state.enemy.powerBonus} = ${dmg}.`;
+        text = `${state.enemy.name} ${state.enemy.powerText} for ${dmg} damage.`;
       } else {
-        const attackRoll = rollDie(20);
-        const total = attackRoll + 3;
-        const heroGuard = getGuardValue(state.hero);
-        if (total >= heroGuard) {
-          const damageRoll = rollRange(state.enemy.damageMin, state.enemy.damageMax);
-          dmg = damageRoll;
+        const roll = rollDie(20) + 3;
+        if (roll >= getGuardValue(state.hero)) {
+          dmg = rollRange(state.enemy.damageMin, state.enemy.damageMax);
           state.hero.vitality = Math.max(0, state.hero.vitality - dmg);
-          text = `${state.enemy.name} hits ${state.hero.name}. Attack roll ${attackRoll} + 3 = ${total} vs Guard ${heroGuard}. Damage ${dmg}.`;
+          text = `${state.enemy.name} hits ${state.hero.name} for ${dmg} damage.`;
         } else {
-          text = `${state.enemy.name} misses ${state.hero.name}. Attack roll ${attackRoll} + 3 = ${total} vs Guard ${heroGuard}.`;
+          text = `${state.enemy.name} misses ${state.hero.name}.`;
         }
       }
 
@@ -1047,19 +1151,9 @@
       logLine(`Rolled d${sides}: ${roll}${bonus ? ` + ${bonus} = ${roll + bonus}` : ''}`);
     }
 
-    function rollExpressionFromInput() {
-      const input = document.getElementById('diceExpression').value || DEFAULT_DICE_EXPRESSION;
-      const result = evaluateDiceExpression(input);
-      if (!result) {
-        logLine('Invalid dice expression. Try 2d6+3 or 4d6kh3.');
-        return;
-      }
-      logLine(`Dice roll → ${formatDiceResult(result)}`);
-    }
-
     function statRoll() {
-      const result = evaluateDiceExpression('4d6kh3');
-      return result.total;
+      const rolls = [rollDie(6), rollDie(6), rollDie(6), rollDie(6)].sort((a, b) => b - a);
+      return rolls[0] + rolls[1] + rolls[2];
     }
 
     function rollAllStats() {
@@ -1068,7 +1162,7 @@
       document.getElementById('mind').value = statRoll();
       document.getElementById('spirit').value = statRoll();
       document.getElementById('guard').value = 10 + modifier(document.getElementById('finesse').value);
-      logLine('New random stats rolled with 4d6 keep highest 3.');
+      logLine('New random stats rolled.');
     }
 
     function grantStarterLoot() {
@@ -1258,6 +1352,7 @@
     function renderAll() {
       renderHero();
       renderBattle();
+      renderMap();
       renderQuests();
       renderShop();
       renderLog();
@@ -1266,18 +1361,8 @@
 
     renderAll();
     generateShop();
-
-    const diceInput = document.getElementById('diceExpression');
-    if (diceInput) {
-      diceInput.value = DEFAULT_DICE_EXPRESSION;
-      diceInput.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-          rollExpressionFromInput();
-        }
-      });
-    }
-
+    unlockNearbyLocations(state.world.current);
+    renderMap();
     logLine('Ashen Realm ready. Create a hero to begin.');
-  </script>
-</body>
+  </script></body>
 </html>
