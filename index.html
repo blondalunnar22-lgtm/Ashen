@@ -1558,3 +1558,46 @@
   </script>
 </body>
 </html>
+// ===== TOWN SYSTEM =====
+
+function renderTownActions() {
+  const loc = getCurrentLocation();
+  if (loc.type !== "town") return "";
+
+  return `
+    <div class="subcard" style="margin-top:12px;">
+      <h3>Town Services</h3>
+      <div class="actions" style="margin-top:10px;">
+        <button onclick="visitInn()">Rest at Inn (10g)</button>
+        <button onclick="visitBlacksmith()">Blacksmith (25g)</button>
+        <button onclick="visitHealer()">Healer (15g)</button>
+      </div>
+    </div>
+  `;
+}
+
+function visitInn() {
+  if (state.hero.gold < 10) return logLine("Not enough gold.");
+  state.hero.gold -= 10;
+  state.hero.vitality = state.hero.vitalityMax;
+  state.hero.focus = state.hero.focusMax;
+  logLine("You rest at the inn. Fully restored.");
+  renderAll();
+}
+
+function visitBlacksmith() {
+  if (state.hero.gold < 25) return logLine("Not enough gold.");
+  state.hero.gold -= 25;
+  state.hero.bonuses.attack += 1;
+  logLine("Weapon upgraded. Attack +1.");
+  renderAll();
+}
+
+function visitHealer() {
+  if (state.hero.gold < 15) return logLine("Not enough gold.");
+  state.hero.gold -= 15;
+  state.hero.vitality = clamp(state.hero.vitality + 15, 0, state.hero.vitalityMax);
+  state.hero.potions += 1;
+  logLine("Healer restores you and gives a potion.");
+  renderAll();
+}
